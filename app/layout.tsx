@@ -1,17 +1,7 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "@/styles/globals.css"
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+import Nav from "@/components/Nav"
+import Provider from "@/components/Provider"
 
 export const metadata: Metadata = {
   title: "Promptopia",
@@ -31,6 +21,7 @@ export default function RootLayout({
         </div>
 
         <main className="app">
+          <Nav />
           {children}
         </main>
       </body>
