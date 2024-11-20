@@ -1,6 +1,7 @@
 import { get } from "http"
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
+import { connectToDB } from "../../../../utils/database"
 
 export const authOptions = {
   // Configure one or more authentication providers
@@ -15,7 +16,21 @@ export const authOptions = {
 
   },
   async signIn({ profile }) {
+    try {
+      await connectToDB();
 
+      // check if a user already exists
+
+
+      // if not, create a new user, and save to db
+
+      
+
+      return true
+    } catch (error) {
+      console.log('Something went wrong when signing in, please try again. ', error)
+      return False
+    }
   }
 }
 
