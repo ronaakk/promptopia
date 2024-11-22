@@ -8,7 +8,7 @@ import { signIn, signOut, getProviders, useSession, getSession } from 'next-auth
 function Navbar() {
   const isUserLoggedIn = true;
   const [providers, setProviders] = useState(null);
-  const [toggleDropdown, setToggleDropdown] = useSate(false);
+  const [toggleDropdown, setToggleDropdown] = useState(false);
 
   // useEffect runs a function after a component renders, the [] makes it only run once
   useEffect(() => {

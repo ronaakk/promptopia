@@ -45,5 +45,5 @@ export const authOptions = {
   }
 }
 
-export { handler as GET, handler as POST }
+export { authOptions as GET, authOptions as POST }
 // the [...nextauth] will capture all routes related to next auth
