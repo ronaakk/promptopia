@@ -1,10 +1,9 @@
-import { get } from "http"
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import { connectToDB } from "../../../../utils/database"
 import User from "../../../../models/User"
 
-export const authOptions = {
+const handler = NextAuth({
   // Configure one or more authentication providers
   providers: [
     GoogleProvider({
@@ -40,10 +39,11 @@ export const authOptions = {
       return true
     } catch (error) {
       console.log('Something went wrong when signing in, please try again. ', error)
-      return False
+      return false
     }
   }
-}
+})
 
-export { authOptions as GET, authOptions as POST }
+// this allows our handler object to handle get and post requests
+export { handler as GET, handler as POST }
 // the [...nextauth] will capture all routes related to next auth

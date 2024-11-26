@@ -6,7 +6,8 @@ import { userState, useEffect, useState } from "react"
 import { signIn, signOut, getProviders, useSession, getSession } from 'next-auth/react'
 
 function Navbar() {
-  const isUserLoggedIn = true;
+  // this will check whether a user is currently logged in
+  const { data: session } = useSession();
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
 
@@ -15,13 +16,15 @@ function Navbar() {
     const fetchProviders = async () => {
       const response = await getProviders();
       setProviders(response)
+      console.log(providers)
     } 
 
     fetchProviders()
   }, [])
 
   const handleSignOut = () => {
-
+    // redirect: false will prevent the page from reloading while also deleting the session data
+    signOut({ redirect: false })
   }
 
   return (
@@ -38,9 +41,9 @@ function Navbar() {
       </Link>
 
 
-      {/* Desktop navigation (these styles will be hidden in smaller screens) */}
+      {/* Desktop navigation (these styles will be hidden in smaller screens, but once past sm breakpoint, it will be shown) */}
       <div className="hidden sm:flex">
-        {isUserLoggedIn ? (
+        {session?.user ? (
           <div className="flex gap-3 md:gap-5">
             <Link href='/create-prompt' className="black_btn">
               Create Post
@@ -52,7 +55,7 @@ function Navbar() {
             
             <Link href='/profile' className="">
               <Image 
-                src='/assets/images/logo.svg'
+                src={session.user.image}
                 alt="Profile picture"
                 width={37}
                 height={37}
@@ -77,10 +80,10 @@ function Navbar() {
 
       {/* Mobile navigation */}
       <div className="flex relative sm:hidden">
-        {isUserLoggedIn ? (
+        {session?.user ? (
           <div className="flex">
             <Image 
-              src='/assets/images/logo.svg'
+              src={session.user.image}
               alt="Profile picture"
               width={37}
               height={37}
@@ -110,7 +113,7 @@ function Navbar() {
                   type="button" 
                   onClick={() => {
                     setToggleDropdown(false)
-                    signOut()
+                    handleSignOut()
                   }}
                   className="black_btn mt-4 w-full"
                   >
