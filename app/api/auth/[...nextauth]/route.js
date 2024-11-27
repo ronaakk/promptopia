@@ -8,40 +8,42 @@ const handler = NextAuth({
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_SECRET,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
+  callbacks: {
+    // updating the user session
+    async session({ session }) {
+      const sessionUser = await User.findOne({email: session.user.email})
+      session.user.id = sessionUser._id.toString()
+      return session
+    },
 
-  // updating the user session
-  async session({ session }) {
-    const sessionUser = await User.findOne({email: session.user.email})
-    session.user.id = sessionUser._id.toString()
-    return session
-  },
+    // handling sign in
+    async signIn({ profile }) {
+      try {
+        await connectToDB();
 
-  // handling sign in
-  async signIn({ profile }) {
-    try {
-      await connectToDB();
-
-      // check if a user already exists
-      const user = await User.findOne({email: profile.email})
-      
-      if (!user) {
-        // if not, create a new user, and save to db
-        await User.create({
-          email: profile.email,
-          username: profile.name.replace(' ', '').toLowerCase(),
-          image: profile.picture
-        })
+        // check if a user already exists
+        const user = await User.findOne({email: profile.email})
+        
+        if (!user) {
+          // if not, create a new user, and save to db
+          await User.create({
+            email: profile.email,
+            username: profile.name.replace(' ', '').toLowerCase(),
+            image: profile.picture
+          })
+        }
+        
+        return true
+      } catch (error) {
+        console.log('Something went wrong when signing in, please try again. ', error)
+        return false
       }
-      
-      return true
-    } catch (error) {
-      console.log('Something went wrong when signing in, please try again. ', error)
-      return false
-    }
-  }
+    },
+
+  }  
 })
 
 // this allows our handler object to handle get and post requests

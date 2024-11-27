@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { userState, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { signIn, signOut, getProviders, useSession, getSession } from 'next-auth/react'
 
 function Navbar() {
@@ -15,8 +15,8 @@ function Navbar() {
   useEffect(() => {
     const fetchProviders = async () => {
       const response = await getProviders();
+      console.log('providers fetched: ', response)
       setProviders(response)
-      console.log(providers)
     } 
 
     fetchProviders()
@@ -66,13 +66,11 @@ function Navbar() {
         ) : (
           <>
           {providers && (
-            Object.values(providers).map(provider => {
+            Object.values(providers).map(provider => (
               <button type="button" key={provider.name} onClick={() => signIn(provider.id)} className="black_btn">
-                <Link href={provider.Link}>
-                  Continue with {provider.name}
-                </Link>
+                Continue with {provider.name}
               </button>
-            })
+            ))
           )}
           </>
         )}
@@ -127,13 +125,11 @@ function Navbar() {
         ) : (
           <>
             {providers && (
-              Object.values(providers).map(provider => {
+              Object.values(providers).map(provider => (
                 <button type="button" key={provider.name} onClick={() => signIn(provider.id)} className="black_btn">
-                  <Link href={provider.Link}>
-                    Continue with {provider.name}
-                  </Link>
+                  Continue with {provider.name}
                 </button>
-              })
+              ))
             )}
           </>
         )}
