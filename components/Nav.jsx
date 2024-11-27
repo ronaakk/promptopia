@@ -7,20 +7,22 @@ import { signIn, signOut, getProviders, useSession, getSession } from 'next-auth
 
 function Navbar() {
   // this will check whether a user is currently logged in
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
 
-  // useEffect runs a function after a component renders, the [] makes it only run once
+  // useEffect runs a function after a component renders
   useEffect(() => {
     const fetchProviders = async () => {
-      const response = await getProviders();
-      console.log('providers fetched: ', response)
-      setProviders(response)
+      if (status === 'unauthenticated') {
+        const response = await getProviders();
+        console.log('providers fetched: ', response)
+        setProviders(response)
+      }
     } 
 
     fetchProviders()
-  }, [])
+  }, [status]) // now, it depends on the status variable from useSession before it runs
 
   const handleSignOut = () => {
     // redirect: false will prevent the page from reloading while also deleting the session data
