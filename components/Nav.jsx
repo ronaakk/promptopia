@@ -21,8 +21,29 @@ function Navbar() {
       }
     } 
 
-    fetchProviders()
+    // adding a small timer to ensure client-side hydration (all events are properly loaded into the HTML)
+    const timer = setTimeout(() => {
+      fetchProviders()
+      console.log('fetchProviders called ...')
+    }, 1000)
+
+    // clear the timer 
+    return () => clearTimeout(timer)
   }, [status]) // now, it depends on the status variable from useSession before it runs
+
+  // this function will render the skeleton loader if status still hasn't been finalized, and then load the proper ui
+  const renderSignInContent = () => {
+    if (status == 'unauthenticated' && providers) {
+      return (
+        Object.values(providers).map(provider => (
+          <button type="button" key={provider.name} onClick={() => signIn(provider.id)} className="black_btn">
+            Continue with {provider.name}
+          </button>
+        ))
+      )
+    }
+    return null
+  }
 
   const handleSignOut = () => {
     // redirect: false will prevent the page from reloading while also deleting the session data
@@ -67,13 +88,7 @@ function Navbar() {
           </div>
         ) : (
           <>
-          {providers && (
-            Object.values(providers).map(provider => (
-              <button type="button" key={provider.name} onClick={() => signIn(provider.id)} className="black_btn">
-                Continue with {provider.name}
-              </button>
-            ))
-          )}
+          {renderSignInContent()}
           </>
         )}
       </div>
@@ -126,18 +141,11 @@ function Navbar() {
           </div>
         ) : (
           <>
-            {providers && (
-              Object.values(providers).map(provider => (
-                <button type="button" key={provider.name} onClick={() => signIn(provider.id)} className="black_btn">
-                  Continue with {provider.name}
-                </button>
-              ))
-            )}
+            {renderSignInContent()}
           </>
         )}
 
       </div>
-
     </nav>
   )
 }
