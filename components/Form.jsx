@@ -18,17 +18,37 @@ function Form({ type, post, setPost, submitting, handleSubmit }) {
       <form onSubmit={handleSubmit} className='mt-10 w-full max-w-2xl flex flex-col gap-7 glassmorphism'>
         <label>
           <span className='font-satoshi font-semibold text-base text-gray-700'>Your AI Prompt</span>
-          <textarea required value={post} onChange={(e) => setPost({ ...post, prompt: e.target.value })}>
-
+          <textarea 
+            required 
+            className='form_textarea' 
+            value={post.prompt} 
+            onChange={(e) => setPost({ ...post, prompt: e.target.value })}
+            placeholder='Write your prompt here...'>
           </textarea>
         </label>
 
+        <label>
+          <span className='font-satoshi font-semibold text-base text-gray-700'>
+            Tag 
+            <span className='font-normal italic'> (#career, #tech, #cooking, etc.)</span>
+          </span>
+          <input 
+            required 
+            className='form_input' 
+            value={post.tag} 
+            onChange={(e) => setPost({ ...post, tag: e.target.value })}
+            placeholder='Include appropriate tags for your prompt here...'>
+          </input>
+        </label>
 
-        <button>Post</button>
+        <div className="flex-end mx-3 mb-5 gap-4">
+          <Link href='/' className='text-gray-500 text-sm'>
+            Cancel
+          </Link>
+          <button type='submit' disabled={submitting} className='px-5 py-1.5 text-sm bg-primary-orange rounded-full text-white'>Post</button>
 
+        </div>
       </form>
-        
-
     </section>
   )
 }
