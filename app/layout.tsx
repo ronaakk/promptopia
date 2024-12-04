@@ -3,6 +3,7 @@ import "@/styles/globals.css"
 import Nav from "@/components/Nav"
 import Provider from "@/components/Provider"
 import { getServerSession } from "next-auth";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Promptopia",
@@ -28,6 +29,7 @@ export default async function RootLayout({
             <Nav />
             {children}
           </main>
+          <Toaster />
         </Provider>
       </body>
     </html>
