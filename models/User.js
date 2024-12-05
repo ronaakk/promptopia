@@ -1,5 +1,4 @@
-import mongoose, { Schema, model, models } from "mongoose";
-
+import { Schema, model, models } from "mongoose";
 
 const UserSchema = new Schema({
     email: {
@@ -20,5 +19,5 @@ const UserSchema = new Schema({
 })
 
 // check whether the User model already exists, if not create one
-const User = models.User || mongoose.model('User', UserSchema)
+const User = models.User || model('User', UserSchema)
 export default User

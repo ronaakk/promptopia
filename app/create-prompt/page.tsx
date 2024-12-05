@@ -44,16 +44,11 @@ export default function CreatePrompt() {
             })
 
             if (!response.ok) {
-                console.log("Failed to create prompt.")
+                throw new Error(`Response status: ${response.status}`);
             }
 
-            toast({
-                title: 'Prompt Created.',
-                description: 'Your prompt has been successfully posted!'
-            })
-
-            // redirect the user to the homepage
-            router.push('/')
+            // redirect the user to the homepage with query parameter to show creating the prompt was a success
+            router.push('/?toast=success')
         
         } catch (error: unknown) {
             if (error instanceof Error) {
