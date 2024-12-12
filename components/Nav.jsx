@@ -20,16 +20,8 @@ function Navbar() {
         setProviders(response)
       }
     } 
-
-    // adding a small timer to ensure client-side hydration (all events are properly loaded into the HTML)
-    const timer = setTimeout(() => {
-      fetchProviders()
-      console.log('fetchProviders called ...')
-    }, 1000)
-
-    // clear the timer 
-    return () => clearTimeout(timer)
-  }, [status]) // now, it depends on the status variable from useSession before it runs
+    fetchProviders();
+  }, [status]) // now, it depends on the status variable from useSession before it runs (it will run anytime it changes)
 
   // this function will render the skeleton loader if status still hasn't been finalized, and then load the proper ui
   const renderSignInContent = () => {

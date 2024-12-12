@@ -22,7 +22,9 @@ function Form({ type, post, setPost, submitting, handleSubmit }) {
             required 
             className='form_textarea' 
             value={post.prompt} 
-            onChange={(e) => setPost({ ...post, prompt: e.target.value })}
+            onChange={(e) => {
+              setPost(prev => ({ ...prev, prompt: e.target.value }))
+            }}
             placeholder='Write your prompt here...'>
           </textarea>
         </label>
@@ -36,7 +38,9 @@ function Form({ type, post, setPost, submitting, handleSubmit }) {
             required 
             className='form_input' 
             value={post.tag} 
-            onChange={(e) => setPost({ ...post, tag: e.target.value })}
+            onChange={(e) => {
+              setPost(prev => ({ ...prev, tag: e.target.value }))
+            }}
             placeholder='Include appropriate tags for your prompt here...'>
           </input>
         </label>
@@ -45,8 +49,9 @@ function Form({ type, post, setPost, submitting, handleSubmit }) {
           <Link href='/' className='text-gray-500 text-sm'>
             Cancel
           </Link>
-          <button type='submit' disabled={submitting} className='px-5 py-1.5 text-sm bg-primary-orange rounded-full text-white'>Post</button>
-
+          <button type='submit' disabled={submitting} className='px-5 py-1.5 text-sm bg-primary-orange rounded-full text-white'>
+            {submitting ? `Creating...` : type}
+          </button>
         </div>
       </form>
     </section>

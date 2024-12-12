@@ -1,27 +1,36 @@
-import type { NextApiRequest, NextApiResponse } from "next";
 import Prompt from '@/models/Prompt'
 import { connectToDB } from "@/utils/database";
+import User from "@/models/User";
+import { NextRequest } from 'next/server';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    // save the new prompt to the model
-    if (req.method === 'POST') {
-        try {
-            const { userId, prompt, tag } = req.body;
-            await connectToDB();
-            
-            const newPrompt = Prompt.create({
-                creator: userId,
-                prompt: prompt,
-                tag: tag
-            })
-            
-            // returning the newly created prompt as json
-            return res.status(201).json(newPrompt)
+// use NextRequest as it's the standard for the app router in next 14
+export async function POST(req: NextRequest) {
+    // save the new prompt to the model 
+    try {
+        await connectToDB();
 
-        } catch (error) {
-            console.error('Error saving new prompt:', error);
-            return res.status(500).json({ error: 'Error saving new prompt.' })
-        }   
-    }
+        // need to parse the req body
+        const body = await req.json()
+        const { email, prompt, tag } = body;
+        
+        // get the userId from the email
+        const user = await User.findOne({ email: email })
+        const userId = user?._id
+
+        const newPrompt = await Prompt.create({
+            creator: userId,
+            prompt: prompt,
+            tag: tag
+        })
+
+        // returning the newly created prompt as json
+        return Response.json(newPrompt, { status: 201 })
+
+    } catch (error) {
+        console.error('Error saving new prompt:', error);
+        return Response.json({ error: 'Error saving new prompt.'}, { status: 500 })
+    }   
 }
 
+
+// You are a professional web developer. I want you to look over this snippet of code and make it more readable and efficient. Also let me know any errors you find! [insert snippet]
