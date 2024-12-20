@@ -25,6 +25,7 @@ function PromptCard({ post, handleEdit, handleDelete, handleTagClick }) {
 
   // handlers to copy, edit, and delete
   const handleCopy = () => {
+    console.log('handleCopy called ...')
     toast({
       'title': 'Copied to clipboard.'
     })
@@ -37,8 +38,8 @@ function PromptCard({ post, handleEdit, handleDelete, handleTagClick }) {
 
   return (
     <div className="prompt_card">
-      <div className="flex flex-col justify-between items-start gap-2 w-full">
-        {/* flex-1 will allow the name and email to grow and shrink */}
+      <div className="flex justify-between items-center gap-2">
+        {/* flex-1 will allow the name to grow and shrink */}
         <div className="flex flex-1 justify-start items-center gap-3 cursor-pointer" onClick={() => handleProfileClick}>
           <Image 
             src={post.creator.image}
@@ -54,16 +55,9 @@ function PromptCard({ post, handleEdit, handleDelete, handleTagClick }) {
             </h3>
           </div>
         </div>
+        
 
-        {/* the prompt itself */}
-        <p className="font-satoshi text-sm text-gray-700 my-3">{post.prompt}</p>
-        <div className="flex justify-between items-center w-full">
-          {/* calling handleTagClick only if it is defined/exists */}
-          <p className="font-inter text-sm blue_gradient cursor-pointer" onClick={() => handleTagClick && handleTagClick(post.tag)}>
-            #{post.tag}
-          </p>
-
-          <div className="copy_btn" onClick={() => handleCopy}>
+        <div className="copy_btn" onClick={() => handleCopy}>
               <Image 
                 src={
                   copied === post.prompt ? '/assets/icons/tick.svg' : '/assets/icons/copy.svg'
@@ -72,23 +66,31 @@ function PromptCard({ post, handleEdit, handleDelete, handleTagClick }) {
                 width={12}
                 height={12}
               />
-          </div>
-
-
         </div>
-
-        {/* check if the logged in user can edit/delete their own tag */}
-        {post.creator.email === session?.user?.email && pathName === '/profile' && (
-          <div className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3">
-            <p className="font-inter text-sm cursor-pointer green_gradient" onClick={() => handleEdit}>
-              Edit
-            </p>
-            <p className="font-inter text-sm cursor-pointer orange_gradient" onClick={() => handleDelete}>
-              Delete
-            </p>
-          </div>
-        )}
       </div>
+    
+
+      {/* the prompt itself */}
+      <p className="font-satoshi text-sm text-gray-700 my-3 text-start">{post.prompt}</p>
+      <div className="flex justify-between items-center w-full">
+        {/* calling handleTagClick only if it is defined/exists */}
+        <p className="font-inter text-sm blue_gradient cursor-pointer" onClick={() => handleTagClick && handleTagClick(post.tag)}>
+          #{post.tag}
+        </p>
+      </div>
+
+      {/* check if the logged in user can edit/delete their own tag */}
+      {post.creator.email === session?.user?.email && pathName === '/profile' && (
+        <div className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3">
+          <p className="font-inter text-sm cursor-pointer green_gradient" onClick={() => handleEdit}>
+            Edit
+          </p>
+          <p className="font-inter text-sm cursor-pointer orange_gradient" onClick={() => handleDelete}>
+            Delete
+          </p>
+        </div>
+      )}
+    
     </div>
   )
 }
