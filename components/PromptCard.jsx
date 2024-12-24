@@ -16,6 +16,7 @@ function PromptCard({ post, handleEdit, handleDelete, handleTagClick }) {
   const { toast } = useToast();
 
   const handleProfileClick = () => {
+    console.log('profile clicked ...')
     if (session?.user?.email === post.creator.email) {
       router.push('/profile')
     } else {
@@ -25,7 +26,6 @@ function PromptCard({ post, handleEdit, handleDelete, handleTagClick }) {
 
   // handlers to copy, edit, and delete
   const handleCopy = () => {
-    console.log('handleCopy called ...')
     toast({
       'title': 'Copied to clipboard.'
     })
@@ -40,7 +40,7 @@ function PromptCard({ post, handleEdit, handleDelete, handleTagClick }) {
     <div className="prompt_card">
       <div className="flex justify-between items-center gap-2">
         {/* flex-1 will allow the name to grow and shrink */}
-        <div className="flex flex-1 justify-start items-center gap-3 cursor-pointer" onClick={() => handleProfileClick}>
+        <div className="flex flex-1 justify-start items-center gap-3 cursor-pointer" onClick={() => handleProfileClick()}>
           <Image 
             src={post.creator.image}
             alt="profile picture"
@@ -57,15 +57,15 @@ function PromptCard({ post, handleEdit, handleDelete, handleTagClick }) {
         </div>
         
 
-        <div className="copy_btn" onClick={() => handleCopy}>
-              <Image 
-                src={
-                  copied === post.prompt ? '/assets/icons/tick.svg' : '/assets/icons/copy.svg'
-                }
-                alt={copied === post.prompt ? 'tick_icon' : 'copy_icon'}
-                width={12}
-                height={12}
-              />
+        <div className="copy_btn" onClick={() => handleCopy()}>
+          <Image 
+            src={
+              copied === post.prompt ? '/assets/icons/tick.svg' : '/assets/icons/copy.svg'
+            }
+            alt={copied === post.prompt ? 'tick_icon' : 'copy_icon'}
+            width={12}
+            height={12}
+          />
         </div>
       </div>
     
