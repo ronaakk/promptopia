@@ -12,10 +12,11 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    // updating the user session
+    // updating the user session when logged in, we are adding the id field to the session
     async session({ session }) {
       await connectToDB();
       const sessionUser = await User.findOne({email: session.user.email})
+      // add the id field
       session.user.id = sessionUser._id.toString()
       return session
     },
