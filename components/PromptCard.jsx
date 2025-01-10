@@ -5,10 +5,10 @@ import Image from "next/image"
 import { useSession } from "next-auth/react"
 import { usePathname, useRouter } from "next/navigation"
 import { useToast } from '@/hooks/use-toast'
+import deletePromptDialog from "./ui/DeletePromptDialog"
 
-// TODO: Need to implement handleDelete and handleEdit
 // handleTagClick is passed as a function reference here from Feed
-function PromptCard({ post, handleEdit, handleDelete, handleTagClick }) {
+function PromptCard({ post, handleEdit, handleDelete, handleTagClick,  }) {
   const router = useRouter()
   const pathName = usePathname()
   const { data: session } = useSession()
@@ -82,12 +82,31 @@ function PromptCard({ post, handleEdit, handleDelete, handleTagClick }) {
       {/* check if the logged in user can edit/delete their own tag */}
       {post.creator.email === session?.user?.email && pathName === '/profile' && (
         <div className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3">
-          <p className="font-inter text-sm cursor-pointer green_gradient" onClick={() => handleEdit}>
+          <p className="font-inter text-sm cursor-pointer green_gradient" onClick={() => handleEdit(post)}>
             Edit
           </p>
-          <p className="font-inter text-sm cursor-pointer orange_gradient" onClick={() => handleDelete}>
-            Delete
-          </p>
+          
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <p className="font-inter text-sm cursor-pointer orange_gradient">
+                Delete
+              </p>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete this prompt and remove it from our servers.
+                </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => handleDelete(post)}>
+                    Confirm
+                </AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       )}
     
