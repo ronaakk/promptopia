@@ -2,15 +2,14 @@
 
 import { useSession } from "next-auth/react"
 import { useState, useEffect } from "react"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import Profile from '@/components/Profile'
 
 // create interface for Post to use in all functions, this will have the primary id associated with each Prompt
 interface Post {
     _id: string,
 }
-
-function ProfilePage() {
+function Page() {
     const router = useRouter()
     const [myPosts, setMyPosts] = useState([])
     const { data: session } = useSession()
@@ -20,7 +19,8 @@ function ProfilePage() {
         const fetchMyPosts = async () => {
             const response = await fetch(`/api/users/${userId}/posts`)
             const posts = await response.json()
-            setMyPosts(posts)
+            const postsArray = JSON.parse(posts)
+            setMyPosts(postsArray)
         }
 
         if (userId) {
@@ -59,4 +59,4 @@ function ProfilePage() {
   )
 }
 
-export default ProfilePage
+export default Page

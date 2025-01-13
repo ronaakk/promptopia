@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css"
 import Nav from "@/components/Nav"
-import Provider from "@/components/Provider"
+import Provider from '@/components/Provider'
 import { getServerSession } from "next-auth";
 import { Toaster } from "@/components/ui/toaster";
 

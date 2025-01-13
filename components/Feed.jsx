@@ -5,6 +5,9 @@ import PromptCard from '@/components/PromptCard'
 
 // this component will handle the prompts displayed depending on whether the user has searched anything or not
 const PromptCardList = ({ data, handleTagClick }) => {
+  // console.log("Is data an array?: ", Array.isArray(data))
+  // console.log("Type of data: ", typeof data)
+  // console.log("Actual data: ", data)
   return (
     <div className="mt-15 prompt_layout">
       {data.map((post) => (
@@ -18,7 +21,6 @@ const PromptCardList = ({ data, handleTagClick }) => {
   );
 };
 
-
 const Feed = () => {
   // use a state variable to store all posts
   const [allPosts, setAllPosts] = useState([])
@@ -31,9 +33,10 @@ const Feed = () => {
   // get all posts using api
   const fetchAllPosts = async () => {
     const response = await fetch('/api/prompt')
+    // data will return as a json string, need to turn into array
     const data = await response.json()
-    setAllPosts(data)
-    console.log('all posts fetched... ', allPosts)
+    const postsArray = JSON.parse(data)
+    setAllPosts(postsArray)
   }
 
   // we want to get all posts on initial render of homepage

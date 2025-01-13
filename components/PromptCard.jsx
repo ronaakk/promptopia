@@ -5,10 +5,21 @@ import Image from "next/image"
 import { useSession } from "next-auth/react"
 import { usePathname, useRouter } from "next/navigation"
 import { useToast } from '@/hooks/use-toast'
-import deletePromptDialog from "./ui/DeletePromptDialog"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 
 // handleTagClick is passed as a function reference here from Feed
-function PromptCard({ post, handleEdit, handleDelete, handleTagClick,  }) {
+function PromptCard({ post, handleEdit, handleDelete, handleTagClick }) {
   const router = useRouter()
   const pathName = usePathname()
   const { data: session } = useSession()
@@ -16,10 +27,10 @@ function PromptCard({ post, handleEdit, handleDelete, handleTagClick,  }) {
   const { toast } = useToast();
 
   const handleProfileClick = () => {
-    console.log('profile clicked ...')
     if (session?.user?.email === post.creator.email) {
       router.push('/profile')
     } else {
+      // TODO: Implement user profile page (not own)
       router.push(`/profile/${post.creator._id}?name=${post.creator.username}`)
     }
   }

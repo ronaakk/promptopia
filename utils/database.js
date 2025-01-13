@@ -9,7 +9,6 @@ export const connectToDB = async () => {
             dbName: 'share_prompt',
         })
         isConnected = true
-        console.log('Connected to database.')
     } catch (error) {
         console.log('Failed to connect to database: ', error)
     }

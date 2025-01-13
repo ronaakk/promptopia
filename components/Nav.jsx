@@ -16,7 +16,6 @@ function Navbar() {
     const fetchProviders = async () => {
       if (status === 'unauthenticated') {
         const response = await getProviders();
-        console.log('providers fetched: ', response)
         setProviders(response)
       }
     } 

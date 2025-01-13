@@ -67,15 +67,13 @@ export default function CreatePrompt() {
                 router.push('/?toast=success')
             }
         } catch (error: unknown) {
-            if (error instanceof Error) {
-                console.log('Failed to post/edit prompt: ', error.message)
+            if (error instanceof Error) {              
                 toast({
                     title: 'Uh oh! Something went wrong.',
                     description: 'There was a problem creating your prompt. Please try again.'
                 })
 
             } else {
-                console.log('Unknown error: ', error)
                 toast({
                     title: 'Uh oh! Something went wrong.',
                     description: 'Something unexpected occured. Please try again'
