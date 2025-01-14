@@ -7,7 +7,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
         await connectToDB()
 
         // get the post associated with the id
-        const deletedPrompt = await Prompt.deleteOne({ id: params.id })
+        const deletedPrompt = await Prompt.findByIdAndDelete(params.id)
         
         return Response.json("Prompt deleted successfully.", { status: 200 })
     } catch (error) {

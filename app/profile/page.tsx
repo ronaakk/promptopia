@@ -34,15 +34,19 @@ function Page() {
     }
 
     // once user confirms 
-    // TODO: Need to implement this api route
     const handleDelete = async (post: Post) => {
         try {
-            await fetch(`/api/prompt/${post._id}`, {
+            const response = await fetch(`/api/prompt/${post._id}`, {
                 method: 'DELETE'
             })
 
-            const filteredPosts = myPosts.filter((item: Post) => item._id !== post._id)
-            setMyPosts(filteredPosts)
+            if (response.ok) {
+                const filteredPosts = myPosts.filter((item: Post) => item._id !== post._id)
+                setMyPosts(filteredPosts)
+            } else {
+                const error = await response.json()
+                throw new Error(error.message)
+            }
         } catch (error) {
             console.log(error)
         }
@@ -54,7 +58,7 @@ function Page() {
         data={myPosts}
         handleDelete={handleDelete}
         handleEdit={handleEdit}
-        desc='Welcome to your personalized profile page.'
+        desc='Welcome to your personalized profile page. Explore all your prompts here.'
     />
   )
 }

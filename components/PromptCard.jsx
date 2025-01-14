@@ -16,6 +16,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { toast } from "@/hooks/use-toast"
 
 
 // handleTagClick is passed as a function reference here from Feed
@@ -27,10 +28,16 @@ function PromptCard({ post, handleEdit, handleDelete, handleTagClick }) {
   const { toast } = useToast();
 
   const handleProfileClick = () => {
-    if (session?.user?.email === post.creator.email) {
+    if (!session) {
+      toast({
+        variant: 'destructive',
+        description: 'Please login to continue.'
+      })
+    }
+    else if (session?.user?.id === post.creator._id) {
       router.push('/profile')
-    } else {
-      // TODO: Implement user profile page (not own)
+    } 
+    else {
       router.push(`/profile/${post.creator._id}?name=${post.creator.username}`)
     }
   }
