@@ -1,9 +1,9 @@
 "use client"
 
-import Link from "next/link"
+import { getProviders, signIn, signOut, useSession } from 'next-auth/react'
 import Image from "next/image"
+import Link from "next/link"
 import { useEffect, useState } from "react"
-import { signIn, signOut, getProviders, useSession, getSession } from 'next-auth/react'
 
 function Navbar() {
   // this will check whether a user is currently logged in
@@ -51,7 +51,7 @@ function Navbar() {
           height={30}
           className="object-contain"
         />
-        <p className="logo-text">Promptopia</p>
+        <p className="logo-text orange_gradient">Promptopia</p>
       </Link>
 
 

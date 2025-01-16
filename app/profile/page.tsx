@@ -18,8 +18,7 @@ function Page() {
     useEffect(() => {
         const fetchMyPosts = async () => {
             const response = await fetch(`/api/users/${userId}/posts`)
-            const posts = await response.json()
-            const postsArray = JSON.parse(posts)
+            const postsArray = await response.json()
             setMyPosts(postsArray)
         }
 

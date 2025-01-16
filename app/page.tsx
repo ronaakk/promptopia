@@ -18,8 +18,14 @@ export default function Home() {
         description: 'Your prompt has been successfully posted!'
       })
     }
+    if (searchParams.get('toast') === 'updated') {
+      toast({
+        title: 'Prompt Updated.',
+        description: 'Your prompt has been successfully updated!'
+      })
+    }
 
-    // remove the query param from the url
+    // remove the query params from the url
     const params = new URLSearchParams(Array.from(searchParams.entries()))
     params.delete('toast')
     const newUrl = `${window.location.pathname}?${params.toString()}`

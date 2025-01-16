@@ -16,8 +16,7 @@ function Page() {
         const fetchUserDetails = async () => {
             // set users posts
             const response = await fetch(`/api/users/${userId}/posts`)
-            const data = await response.json()
-            const postsArray = JSON.parse(data)
+            const postsArray = await response.json()
             setUserPosts(postsArray)
         }
 

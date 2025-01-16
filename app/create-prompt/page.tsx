@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Form from '@/components/Form'
 import { useToast } from '@/hooks/use-toast'
+import { sanitizeTag } from '@/utils/helpers'
 
 export default function CreatePrompt() {
     const router = useRouter()
@@ -15,21 +16,14 @@ export default function CreatePrompt() {
         prompt: '',
         tag: '',
     })
-
-    // regex helper to prevent weird tags on prompts
-    const sanitizeTag = (tag: string): string => {
-        return tag
-          .toLowerCase()                // Convert to lowercase
-          .replace(/\s+/g, '')          // Remove all whitespace characters
-          .replace(/[^a-z0-9]/g, '');   // Remove all non-alphanumeric characters
-    };
     
     // create the prompt and save it to db
     const createPrompt = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault()
         if (!session) {
             toast({
-                title: 'Please login to post a prompt.',
+                variant: 'destructive',
+                description: 'Please login to post a prompt.',
             })
             return
         }
@@ -37,7 +31,7 @@ export default function CreatePrompt() {
         isSubmitting(true)
 
         try {
-            // sanitize the tag first
+            // sanitize the tag first with the helper
             const sanitizedTag = sanitizeTag(post.tag)
 
             // try and save the new prompt to the model using api
