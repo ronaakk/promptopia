@@ -32,6 +32,11 @@ export async function PATCH(req: NextRequest, { params } : { params: { id: strin
             return Response.json({ error: "Prompt not found." }, { status: 404 })
         }
 
+        // ensure tag meets the required limit
+        if (updatedTag.length > 25) {
+            return new Response(JSON.stringify({ error: "Tag exceeds the max length.", code: "MAX_LENGTH_EXCEEDED" }), { status: 400 })
+        }
+
         const updatedDocument = await Prompt.findByIdAndUpdate(
             params.id,
             {
