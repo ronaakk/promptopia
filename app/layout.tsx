@@ -8,6 +8,9 @@ import { Toaster } from "@/components/ui/toaster";
 export const metadata: Metadata = {
   title: "Promptopia",
   description: "Discover and share AI Prompts",
+  icons: {
+    icon: '/assets/images/logo.svg'
+  }
 };
 
 export default async function RootLayout({

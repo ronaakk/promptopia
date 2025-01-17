@@ -49,12 +49,18 @@ export default function CreatePrompt() {
             })
 
             if (!response.ok) {
-                const errorText = await response.text();
-                console.error(errorText);
-                toast({ 
-                    title: 'Invalid input', 
-                    description: 'Please check your prompt and tag.' 
-                });
+                const errorData = await response.json()
+                if (errorData.code === 'MAX_LENGTH_EXCEEDED') {
+                    toast({ 
+                        title: 'Invalid Input.', 
+                        description: 'Tag exceeds the maximum length of 25 characters.' 
+                    });
+                } else {
+                    toast({ 
+                        title: 'Invalid Input.', 
+                        description: 'Please check your prompt ensure the fields are filled.' 
+                    });
+                }
                 isSubmitting(false)
             } else {
                 // redirect the user to the homepage with query parameter to show creating the prompt was a success

@@ -11,7 +11,8 @@ const PromptSchema = new Schema({
     },
     tag: {
         type: String,
-        required: [true, 'A tag is required.']
+        required: [true, 'A tag is required.'],
+        maxLength: 25
     }
 })
 

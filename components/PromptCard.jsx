@@ -16,8 +16,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { toast } from "@/hooks/use-toast"
-
 
 // handleTagClick is passed as a function reference here from Feed
 function PromptCard({ post, handleEdit, handleDelete, handleTagClick }) {
@@ -90,7 +88,7 @@ function PromptCard({ post, handleEdit, handleDelete, handleTagClick }) {
 
       {/* the prompt itself */}
       <p className="font-satoshi text-sm text-gray-700 my-3 text-start">{post.prompt}</p>
-      <div className="flex justify-between items-center w-full">
+      <div className="flex justify-between items-center">
         {/* calling handleTagClick only if it is defined/exists */}
         <p className="font-inter text-sm blue_gradient cursor-pointer" onClick={() => handleTagClick && handleTagClick(post.tag)}>
           #{post.tag}

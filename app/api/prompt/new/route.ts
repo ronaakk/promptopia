@@ -12,6 +12,11 @@ export async function POST(req: NextRequest) {
         // need to parse the req body
         const body = await req.json()
         const { email, prompt, tag } = body;
+
+        // ensure tag meets the required limit
+        if (tag.length > 25) {
+            return new Response(JSON.stringify({ error: "Tag exceeds the max length.", code: "MAX_LENGTH_EXCEEDED" }), { status: 400 })
+        }
         
         // get the userId from the email
         const user = await User.findOne({ email: email })
