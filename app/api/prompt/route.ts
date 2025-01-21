@@ -2,6 +2,9 @@ import { NextRequest } from "next/server";
 import Prompt from "@/models/Prompt";
 import { connectToDB } from "@/utils/database";
 
+// prevent default caching
+export const dynamic = 'force-dynamic'
+
 // Get all posts
 export async function GET(req: NextRequest) {
     try {  
