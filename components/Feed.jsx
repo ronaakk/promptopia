@@ -34,8 +34,7 @@ const Feed = () => {
   const fetchAllPosts = async () => {
     const response = await fetch('/api/prompt')
     // data will return as a json string, need to turn into array
-    const data = await response.json()
-    const postsArray = JSON.parse(data)
+    const postsArray = await response.json()
     setAllPosts(postsArray)
   }
 
