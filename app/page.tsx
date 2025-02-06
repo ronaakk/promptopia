@@ -33,7 +33,6 @@ export default function Home() {
 
   }, [searchParams, router])
 
-  // TODO: Add favicon
   return (
     <section className="w-full flex flex-col items-center text-center">
       <h1 className="head_text">

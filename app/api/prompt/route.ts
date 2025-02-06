@@ -16,6 +16,6 @@ export async function GET(req: NextRequest) {
         return Response.json(posts, { status: 200 })
     } catch (error) {
         console.log('Error retrieving all posts: ', error)
-        return Response.json({ error: "Error retrieving all posts." }, { status: 500 })
+        return Response.json({ error: `Error retrieving all posts: ${error}` }, { status: 500 })
     }
 }
