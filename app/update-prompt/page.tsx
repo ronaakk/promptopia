@@ -18,7 +18,7 @@ function Page() {
     const [submitting, isSubmitting] = useState(false) 
     const searchParams = useSearchParams()
     const promptId = searchParams.get('id')
-    const { data: session } = useSession()
+    const { data: session } = useSession({ required: true })
     const router = useRouter()
 
     useEffect(() => {

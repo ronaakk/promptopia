@@ -11,6 +11,10 @@ const handler = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
+  // this option will revalidate the session when it expires
+  session: {
+    maxAge: 60 * 30 // expire every 30 mins of inactivity
+  },
   callbacks: {
     // updating the user session when logged in, we are adding the id field to the session
     async session({ session }) {
@@ -44,7 +48,19 @@ const handler = NextAuth({
         return false
       }
     },
-
+  },
+  cookies: {
+    // this token is used to store the users session id and JWT on the client side,
+    // with each request which is sent back to the server to authenticate them
+    sessionToken: {
+      name: `__Secure-next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: true
+      }
+    },
   }  
 })
 

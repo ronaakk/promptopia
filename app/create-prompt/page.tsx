@@ -9,7 +9,7 @@ import { sanitizeTag } from '@/utils/helpers'
 
 export default function CreatePrompt() {
     const router = useRouter()
-    const { data: session } = useSession()
+    const { data: session } = useSession({ required: true })
     const { toast } = useToast()
     const [submitting, isSubmitting] = useState(false) 
     const [post, setPost] = useState({

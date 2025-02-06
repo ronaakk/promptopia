@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { useSession } from "next-auth/react"
 import { usePathname, useRouter } from "next/navigation"
@@ -21,9 +21,16 @@ import {
 function PromptCard({ post, handleEdit, handleDelete, handleTagClick }) {
   const router = useRouter()
   const pathName = usePathname()
-  const { data: session } = useSession()
+  const { data: session } = useSession({ required: true })
+  const [isSessionReady, setIsSessionReady] = useState(false)
   const [copied, setCopied] = useState('')
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (session) {
+        setIsSessionReady(true)
+    }
+  }, [session])
 
   const handleProfileClick = () => {
     if (!session) {

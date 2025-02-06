@@ -5,9 +5,6 @@ import PromptCard from '@/components/PromptCard'
 
 // this component will handle the prompts displayed depending on whether the user has searched anything or not
 const PromptCardList = ({ data, handleTagClick }) => {
-  // console.log("Is data an array?: ", Array.isArray(data))
-  // console.log("Type of data: ", typeof data)
-  // console.log("Actual data: ", data)
   return (
     <div className="mt-15 prompt_layout">
       {data.map((post) => (

@@ -12,7 +12,7 @@ interface Post {
 function Page() {
     const router = useRouter()
     const [myPosts, setMyPosts] = useState([])
-    const { data: session } = useSession()
+    const { data: session } = useSession({ required: true })
     const userId = session?.user?.id
 
     useEffect(() => {
