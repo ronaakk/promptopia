@@ -29,10 +29,21 @@ const Feed = () => {
 
   // get all posts using api
   const fetchAllPosts = async () => {
-    const response = await fetch('/api/prompt')
-    // data will return as a json string, need to turn into array
-    const postsArray = await response.json()
-    setAllPosts(postsArray)
+    try {
+      const response = await fetch('/api/prompt')
+
+      // check if the response was successful
+      if (!response ){
+        throw new Error('Something went wrong, failed to retrieve all posts.')
+      }
+
+      // data will return as a json string, need to turn into array
+      const postsArray = await response.json()
+      setAllPosts(postsArray)
+    } catch (error) {
+      console.error('Failed to retrieve all posts: ', error)
+    }
+    
   }
 
   // we want to get all posts on initial render of homepage
@@ -88,10 +99,14 @@ const Feed = () => {
 
       {/* display searched results here */}
       {searchText ? (
-        <PromptCardList
-          data={searchedResults}
-          handleTagClick={handleTagClick}
-        />
+        searchedResults.length > 0 ? (
+          <PromptCardList
+            data={searchedResults}
+            handleTagClick={handleTagClick}
+          />
+        ) : (
+          <p className="orange_gradient">No posts found.</p> 
+        )
       ) : (
         <PromptCardList
           data={allPosts}

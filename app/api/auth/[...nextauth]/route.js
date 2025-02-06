@@ -3,7 +3,7 @@ import GoogleProvider from "next-auth/providers/google"
 import { connectToDB } from "../../../../utils/database"
 import User from "../../../../models/User"
 
-const handler = NextAuth({
+export const authOptions = NextAuth({
   // Configure one or more authentication providers
   providers: [
     GoogleProvider({
@@ -16,13 +16,23 @@ const handler = NextAuth({
     maxAge: 60 * 30 // expire every 30 mins of inactivity
   },
   callbacks: {
-    // updating the user session when logged in, we are adding the id field to the session
+    // updating the user session when logged in, we are adding the id field to the session if user exists
     async session({ session }) {
-      await connectToDB();
-      const sessionUser = await User.findOne({email: session.user.email})
-      // add the id field
-      session.user.id = sessionUser._id.toString()
-      return session
+      try {
+        await connectToDB();
+        const sessionUser = await User.findOne({email: session.user.email})
+
+        if (sessionUser) {
+          // add the id field
+          session.user.id = sessionUser._id.toString()
+        } else {
+          console.error('Could not find user in database. ', session.user.email)
+        }
+      } catch (error) {
+        console.error('Error in session callback. ', error)
+      }
+      
+      return session   
     },
 
     // handling sign in
@@ -61,9 +71,11 @@ const handler = NextAuth({
         secure: true
       }
     },
-  }  
+  },
+  secret: process.env.NEXTAUTH_SECRET  // Needs to be set for signing and verifying JWTs and encrypting session cookies
 })
 
+const handler = NextAuth(authOptions)
 // this allows our handler object to handle get and post requests
 export { handler as GET, handler as POST }
 // the [...nextauth] will capture all routes related to next auth
