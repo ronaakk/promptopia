@@ -4,8 +4,10 @@ import Feed from "@/components/Feed"
 import { useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useSearchParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
+  const { data: session, status } = useSession()
   const searchParams = useSearchParams()
   const router = useRouter()
   let { toast } = useToast();
@@ -32,6 +34,11 @@ export default function Home() {
     router.replace(newUrl)
 
   }, [searchParams, router])
+
+  // Show a loading state while the session is being fetched
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
 
   return (
     <section className="w-full flex flex-col items-center text-center">

@@ -11,13 +11,14 @@ const handler = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
-  // this option will revalidate the session when it expires
+  // this are options for the session on the server side
   session: {
-    maxAge: 60 * 30 // expire every 30 mins of inactivity
+    maxAge: 60 * 60 // expire every 1 hour of inactivity
   },
   callbacks: {
     // updating the user session when logged in, we are adding the id field to the session if user exists
     async session({ session }) {
+      console.log("Session before modification:", session);
       try {
         await connectToDB();
         const sessionUser = await User.findOne({email: session.user.email})
@@ -31,6 +32,8 @@ const handler = NextAuth({
       } catch (error) {
         console.error('Error in session callback. ', error)
       }
+      // Your logic to modify the session
+      console.log("Session after modification:", session);
       
       return session   
     },
@@ -68,13 +71,13 @@ const handler = NextAuth({
         httpOnly: true,
         sameSite: 'lax',
         path: '/',
-        secure: true
+        secure: process.env.NODE_ENV === 'production' // only have this on in production
       }
     },
   },
   secret: process.env.NEXTAUTH_SECRET  // Needs to be set for signing and verifying JWTs and encrypting session cookies
 })
 
-// this allows our handler object to handle get and post requests
+// this allows our handler object to handle get and post requests to the /api/auth/[...nextauth] endpoint.
 export { handler as GET, handler as POST }
 // the [...nextauth] will capture all routes related to next auth
