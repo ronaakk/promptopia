@@ -3,7 +3,7 @@ import GoogleProvider from "next-auth/providers/google"
 import { connectToDB } from "../../../../utils/database"
 import User from "../../../../models/User"
 
-export const authOptions = NextAuth({
+const handler = NextAuth({
   // Configure one or more authentication providers
   providers: [
     GoogleProvider({
@@ -75,7 +75,6 @@ export const authOptions = NextAuth({
   secret: process.env.NEXTAUTH_SECRET  // Needs to be set for signing and verifying JWTs and encrypting session cookies
 })
 
-const handler = NextAuth(authOptions)
 // this allows our handler object to handle get and post requests
 export { handler as GET, handler as POST }
 // the [...nextauth] will capture all routes related to next auth

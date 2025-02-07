@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "@/styles/globals.css"
 import Nav from "@/components/Nav"
 import Provider from '@/components/Provider'
-import { authOptions } from "./api/auth/[...nextauth]/route";
+// import { han } from "./api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -20,7 +20,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession();
   return (
     <html lang="en">
       <body>
