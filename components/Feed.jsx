@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import PromptCard from '@/components/PromptCard'
+import { useSession } from "next-auth/react";
 
 // this component will handle the prompts displayed depending on whether the user has searched anything or not
 const PromptCardList = ({ data, handleTagClick }) => {
@@ -27,29 +28,32 @@ const Feed = () => {
   const [searchTimeout, setSearchTimeout] = useState(null)
   const [searchedResults, setSearchedResults] = useState([])
 
-  // get all posts using api
-  const fetchAllPosts = async () => {
-    try {
-      const response = await fetch('/api/prompt')
-
-      // check if the response was successful
-      if (!response ){
-        throw new Error('Something went wrong, failed to retrieve all posts.')
-      }
-
-      // data will return as a json string, need to turn into array
-      const postsArray = await response.json()
-      setAllPosts(postsArray)
-    } catch (error) {
-      console.error('Failed to retrieve all posts: ', error)
-    }
-    
-  }
+  // ensure session is loaded before fetching all posts
+  const { data: session, status } = useSession()
 
   // we want to get all posts on initial render of homepage
   useEffect(() => {
+    // get all posts using api
+    const fetchAllPosts = async () => {
+      try {
+        const response = await fetch('/api/prompt')
+
+        // check if the response was successful
+        if (!response ){
+          throw new Error('Something went wrong, failed to retrieve all posts.')
+        }
+
+        // data will return as a json string, need to turn into array
+        const postsArray = await response.json()
+        setAllPosts(postsArray)
+      } catch (error) {
+        console.error('Failed to retrieve all posts: ', error)
+      }
+    }
+    
+    // fetch all posts regardless of session
     fetchAllPosts()
-  }, [])
+  }, [status])
 
   const filterPosts = (searchtext) => {
     const regex = new RegExp(searchtext, 'i') // make case insensitive search
@@ -105,7 +109,7 @@ const Feed = () => {
             handleTagClick={handleTagClick}
           />
         ) : (
-          <p className="orange_gradient">No posts found.</p> 
+          <p className="orange_gradient mt-10">No posts found.</p> 
         )
       ) : (
         <PromptCardList

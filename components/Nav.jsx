@@ -8,7 +8,6 @@ import { useEffect, useState } from "react"
 function Navbar() {
   // this will check whether a user is currently logged in
   const { data: session, status } = useSession();
-  console.log("Client-side session:", session);
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
 
@@ -22,11 +21,6 @@ function Navbar() {
     } 
     fetchProviders();
   }, [status]) // now, it depends on the status variable from useSession before it runs (it will run anytime it changes)
-
-  // Show a loading state while the session is being fetched
-  if (status === "loading") {
-    return <div>Loading...</div>;
-  }
 
   // this function will render the skeleton loader if status still hasn't been finalized, and then load the proper ui
   const renderSignInContent = () => {

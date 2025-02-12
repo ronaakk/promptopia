@@ -21,7 +21,7 @@ import {
 function PromptCard({ post, handleEdit, handleDelete, handleTagClick }) {
   const router = useRouter()
   const pathName = usePathname()
-  const { data: session } = useSession({ required: true })
+  const { data: session } = useSession()
   const [isSessionReady, setIsSessionReady] = useState(false)
   const [copied, setCopied] = useState('')
   const { toast } = useToast();

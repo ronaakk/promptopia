@@ -20,8 +20,7 @@ export default async function RootLayout({
 }>) {
 
   const session = await getServerSession();
-  // debugging to check whether there's a mismatch
-  console.log("Server-side session:", session);
+  
   return (
     <html lang="en">
       <body>
