@@ -4,8 +4,10 @@ import Feed from "@/components/Feed"
 import { useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useSearchParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
+  const { data: session, status } = useSession()
   const searchParams = useSearchParams()
   const router = useRouter()
   let { toast } = useToast();
@@ -37,9 +39,7 @@ export default function Home() {
     <section className="w-full flex flex-col items-center text-center">
       <h1 className="head_text">
         Discover & Share
-        {/* going to be hidden on screen 768px and larger, (max-md targets breakpoints max-md and larger) */}
-        <br className="max-md:hidden"/>
-        <span className="orange_gradient">
+        <span className="block orange_gradient mt-2">
           AI-Powered Prompts
         </span>
       </h1>

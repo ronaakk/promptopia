@@ -128,7 +128,7 @@
 }
 
 .head_text {
-  @apply mt-5 text-5xl font-extrabold leading-[1.15] text-black sm:text-6xl;
+  @apply mt-4 text-4xl font-extrabold leading-tight text-black sm:text-6xl;
 }
 
 /* Nav Component */
