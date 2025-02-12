@@ -74,12 +74,12 @@ const handler = NextAuth({
     // this token is used to store the users session id and JWT on the client side,
     // with each request which is sent back to the server to authenticate them
     sessionToken: {
-      name: `next-auth.session-token`, // remove __Secure- prefix for localhost, since this is prob making 'secure' force to true in dev
+      name: `__Secure-next-auth.session-token`, // remove __Secure- prefix for localhost, since this is prob making 'secure' force to true in dev
       options: {
         httpOnly: true,
         sameSite: 'lax',
         path: '/',
-        secure: process.env.NODE_ENV === 'production' // only have this on in production
+        secure: true // only have this set as true in production
       }
     },
   },
