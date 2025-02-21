@@ -13,9 +13,9 @@ export async function GET(req: NextRequest) {
         // retrieve all posts from database, while populating the creator field with info about the user
         const posts = await Prompt.find({}).populate("creator")
 
-        return Response.json(posts, { status: 200 })
+        return Response.json(posts || [], { status: 200 })
     } catch (error) {
         console.log('Error retrieving all posts: ', error)
-        return Response.json({ error: `Error retrieving all posts: ${error}` }, { status: 500 })
+        return Response.json([], { status: 500 })
     }
 }

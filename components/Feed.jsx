@@ -6,6 +6,11 @@ import { useSession } from "next-auth/react";
 
 // this component will handle the prompts displayed depending on whether the user has searched anything or not
 const PromptCardList = ({ data, handleTagClick }) => {
+  if (!Array.isArray(data)) {
+    console.error("PromptCardList: data is not an array:", data);
+    return null;
+  }
+  console.log(Array.isArray(data))
   return (
     <div className="mt-15 prompt_layout">
       {data.map((post) => (
@@ -29,28 +34,31 @@ const Feed = () => {
   const [searchedResults, setSearchedResults] = useState([])
 
   // ensure session is loaded before fetching all posts
-  const { data: session, status } = useSession()
+  const { status } = useSession()
+
+  // get all posts
+  const fetchAllPosts = async () => {
+    try {
+      const response = await fetch('/api/prompt')
+
+      // check if the response was successful
+      if (!response ){
+        throw new Error('Something went wrong, failed to retrieve all posts.')
+      }
+
+      // data will return as a json string, need to turn into array
+      const postsArray = await response.json()
+      console.log("posts retrieved:", postsArray)
+
+      setAllPosts(postsArray)
+    } catch (error) {
+      console.error('Failed to retrieve all posts: ', error)
+    }
+  }
+  
 
   // we want to get all posts on initial render of homepage
   useEffect(() => {
-    // get all posts using api
-    const fetchAllPosts = async () => {
-      try {
-        const response = await fetch('/api/prompt')
-
-        // check if the response was successful
-        if (!response ){
-          throw new Error('Something went wrong, failed to retrieve all posts.')
-        }
-
-        // data will return as a json string, need to turn into array
-        const postsArray = await response.json()
-        setAllPosts(postsArray)
-      } catch (error) {
-        console.error('Failed to retrieve all posts: ', error)
-      }
-    }
-    
     // fetch all posts regardless of session
     fetchAllPosts()
   }, [status])
@@ -77,6 +85,7 @@ const Feed = () => {
       setTimeout(() => {
         // filter the results
         const results = filterPosts(searchText);
+        console.log('results from searching:', results)
         setSearchedResults(results)
       }, 500)
     )
