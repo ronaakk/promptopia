@@ -4,9 +4,11 @@ import Profile from "@/components/Profile"
 import { useSearchParams, useParams } from "next/navigation";
 import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react";
+import Loading from "@/components/Loading";
 
 function Page() {
     const { data: session } = useSession();
+    const [isLoading, setIsLoading] = useState(true);
     const [userPosts, setUserPosts] = useState([]);
     
     // get user details from url
@@ -20,6 +22,7 @@ function Page() {
             const response = await fetch(`/api/users/${userId}/posts`)
             const postsArray = await response.json()
             setUserPosts(postsArray)
+            setIsLoading(false)
         }
 
         if (userId) {
@@ -27,6 +30,10 @@ function Page() {
         }
 
     }, [userId, session])
+
+    if (isLoading) {
+        return <Loading />
+    }
 
     return (
     <Profile 

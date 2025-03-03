@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Profile from '@/components/Profile'
+import Loading from '@/components/Loading'
 
 // create interface for Post to use in all functions, this will have the primary id associated with each Prompt
 interface Post {
@@ -11,6 +12,7 @@ interface Post {
 }
 function Page() {
     const router = useRouter()
+    const [isLoading, setIsLoading] = useState(true)
     const [myPosts, setMyPosts] = useState([])
     const { data: session } = useSession({ required: true })
     const userId = session?.user?.id
@@ -20,12 +22,18 @@ function Page() {
             const response = await fetch(`/api/users/${userId}/posts`)
             const postsArray = await response.json()
             setMyPosts(postsArray)
+            setIsLoading(false)
         }
 
         if (userId) {
             fetchMyPosts()
         }
     }, [userId]) // Only fetch when the session is retrieved (when user logs in)
+
+    // initially render loading icon
+    if (isLoading) {
+        return <Loading />
+    }
 
     // redirect user to update prompt page
     const handleEdit = (post: Post) => {
