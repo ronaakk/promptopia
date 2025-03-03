@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import Prompt from "@/models/Prompt";
+import { Prompt } from "@/models";
 import { connectToDB } from "@/utils/database";
 
 // prevent default caching
@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
         await connectToDB();
 
         // retrieve all posts from database, while populating the creator field with info about the user
-        const posts = await Prompt.find({}).populate("creator")
+        const posts = await Prompt.find({}).populate({path: "creator", model: 'User'})
 
         return Response.json(posts || [], { status: 200 })
     } catch (error) {

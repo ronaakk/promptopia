@@ -1,6 +1,6 @@
 import { connectToDB } from "@/utils/database";
 import { NextRequest } from "next/server";
-import Prompt from "@/models/Prompt";
+import { Prompt } from "@/models";
 
 // to prevent default caching
 export const dynamic = 'force-dynamic'

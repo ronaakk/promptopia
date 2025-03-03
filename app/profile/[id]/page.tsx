@@ -3,8 +3,10 @@
 import Profile from "@/components/Profile"
 import { useSearchParams, useParams } from "next/navigation";
 import { useEffect, useState } from "react"
+import { useSession } from "next-auth/react";
 
 function Page() {
+    const { data: session } = useSession();
     const [userPosts, setUserPosts] = useState([]);
     
     // get user details from url
@@ -24,7 +26,7 @@ function Page() {
             fetchUserDetails();
         }
 
-    }, [userId])
+    }, [userId, session])
 
     return (
     <Profile 

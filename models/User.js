@@ -18,6 +18,4 @@ const UserSchema = new Schema({
     }
 })
 
-// check whether the User model already exists, if not create one
-const User = models.User || model('User', UserSchema)
-export default User
+export default UserSchema

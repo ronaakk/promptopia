@@ -1,6 +1,6 @@
-import Prompt from '@/models/Prompt'
+import { Prompt } from '@/models'
 import { connectToDB } from "@/utils/database";
-import User from "@/models/User";
+import { User } from "@/models";
 import { NextRequest } from 'next/server';
 
 // use NextRequest as it's the standard for the app router in next 14

@@ -10,7 +10,7 @@ const PromptCardList = ({ data, handleTagClick }) => {
     console.error("PromptCardList: data is not an array:", data);
     return null;
   }
-  console.log(Array.isArray(data))
+  // console.log(Array.isArray(data))
   return (
     <div className="mt-15 prompt_layout">
       {data.map((post) => (
@@ -42,7 +42,7 @@ const Feed = () => {
       const response = await fetch('/api/prompt')
 
       // check if the response was successful
-      if (!response ){
+      if (!response) {
         throw new Error('Something went wrong, failed to retrieve all posts.')
       }
 

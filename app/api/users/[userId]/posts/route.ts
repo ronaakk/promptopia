@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { connectToDB } from "@/utils/database";
-import Prompt from "@/models/Prompt"
+import { Prompt } from "@/models"
 
 export const dynamic = 'force-dynamic'
 
@@ -9,10 +9,10 @@ export async function GET(req: NextRequest, { params } : { params: { userId : st
         await connectToDB();
         
         // get the prompts associated with the userId
-        const posts = await Prompt.find({ creator : params.userId }).populate('creator')
+        const posts = await Prompt.find({ creator : params.userId }).populate({path: "creator", model: 'User'})
 
         return Response.json(posts, { status: 200 })
     } catch (error) {
-        return Response.json({ error: 'Failed to fetch prompts created by user'}, { status: 500})
+        return Response.json([], { status: 500})
     }
 }

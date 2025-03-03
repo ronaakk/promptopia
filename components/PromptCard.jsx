@@ -21,7 +21,7 @@ import {
 function PromptCard({ post, handleEdit, handleDelete, handleTagClick }) {
   const router = useRouter()
   const pathName = usePathname()
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const [isSessionReady, setIsSessionReady] = useState(false)
   const [copied, setCopied] = useState('')
   const { toast } = useToast();
@@ -32,14 +32,17 @@ function PromptCard({ post, handleEdit, handleDelete, handleTagClick }) {
     }
   }, [session])
 
+  // need to make sure session is loaded to prevent unexpected behaviour
   const handleProfileClick = () => {
+    // check to see if someone is logged in
     if (!session) {
       toast({
         variant: 'destructive',
         description: 'Please login to continue.'
       })
     }
-    else if (session?.user?.id === post.creator._id) {
+    // check on email instead of id
+    else if (session?.user?.email === post.creator.email) {
       router.push('/profile')
     } 
     else {
