@@ -4,6 +4,8 @@ const PromptSchema = new Schema({
     creator: {
         type: Schema.Types.ObjectId,
         ref: 'User',
+        // index's work like pages in a book, by giving each creator an index, it makes queries quicker
+        index: true
     },
     prompt: {
         type: String,
