@@ -9,9 +9,9 @@ export async function GET(req: NextRequest, { params } : { params: { userId : st
         await connectToDB();
         
         // get the prompts associated with the userId
-        const posts = await Prompt.find({ creator : params.userId }).populate({path: "creator", model: 'User'})
+        const posts = await Prompt.find({ creator : params.userId }).populate({path: "creator", model: 'User'}).lean()
 
-        return Response.json(posts, { status: 200 })
+        return Response.json(posts || [], { status: 200 })
     } catch (error) {
         return Response.json([], { status: 500})
     }

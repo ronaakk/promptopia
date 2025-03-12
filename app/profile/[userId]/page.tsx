@@ -13,7 +13,7 @@ function Page() {
     
     // get user details from url
     const params = useSearchParams();
-    const username = params.get["name"]
+    const username = params.get("name")
     const { userId } = useParams<{ userId: string }>()
 
     useEffect(() => {
